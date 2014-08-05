@@ -1,0 +1,33 @@
+{
+  "name" : "${artifactId}",
+  "version" : "${version}",
+  "subscriptions" : [ {
+    "nodeName" : "ToBeCHangedNode",
+    "subject" : "SOAEvents"
+  } ],
+  "nodes" : [
+    {
+      "name" : "ToBeCHangedNode",
+      "sourceNodes" : [ ],
+      "destinationSubjects" : [ ],
+      "maxRetries" : 3,
+      "retryInterval" : 0,
+      "predicate" : {
+        "@class" : "org.overlord.rtgov.ep.mvel.MVELPredicate",
+        "expression" : "event.serviceProvider && !event.request && event.serviceType == \"URL_TO_BE_FILLED\""
+      },
+      "eventProcessor" : {
+        "@class" : "org.overlord.rtgov.ep.mvel.MVELEventProcessor",
+        "script" : "ToBeCHangedNode.mvel",
+        "services" : {
+          "CacheManager" : {
+            "@class" : "org.overlord.rtgov.common.infinispan.service.InfinispanCacheManager"
+          }
+        },
+        "parameters" : {
+        	"creditLimit" : 150
+        }
+      }
+    }
+  ]
+}

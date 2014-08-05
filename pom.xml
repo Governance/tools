@@ -1,0 +1,287 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jboss.integration-platform</groupId>
+    <artifactId>jboss-integration-platform-parent</artifactId>
+    <version>6.0.0.CR9</version>
+  </parent>
+
+  <groupId>org.overlord.tools</groupId>
+  <artifactId>overlord-tools</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Overlord Governance Tools</name>
+  <description>Web Based tooling for the Overlord Project</description>
+  <url>http://www.jboss.org/overlord</url>
+  <inceptionYear>2013</inceptionYear>
+
+  <organization>
+    <name>JBoss, a division of Red Hat</name>
+    <url>http://www.jboss.org</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>Apache License Version 2.0</name>
+      <url>http://repository.jboss.org/licenses/apache-2.0.txt</url>
+      <!--url>http://www.gnu.org/licenses/lgpl.html</url -->
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <issueManagement>
+    <system>jira</system>
+    <url>http://issues.jboss.org/browse/SOAG</url>
+  </issueManagement>
+
+  <scm>
+    <connection>scm:git:git@github.com:Governance/overlord-commons.git</connection>
+    <developerConnection>scm:git:git@github.com:Governance/overlord-commons.git</developerConnection>
+    <url>scm:git:git@github.com:Governance/overlord-commons.git</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <developers>
+    <developer>
+      <name>David Virgil Naranjo</name>
+      <id>dvirgiln</id>
+      <email>dvirgiln@redhat.com</email>
+      <organization>JBoss, a division of Red Hat</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Gary Brown</name>
+      <id>objectiser</id>
+      <email>gbrown@redhat.com</email>
+      <organization>JBoss, a division of Red Hat</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Eric Wittmann</name>
+      <id>ewittman</id>
+      <email>eric.wittmann@redhat.com</email>
+      <organization>Red Hat</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Brett Meyer</name>
+      <id>brmeyer</id>
+      <email>brmeyer@redhat.com</email>
+      <organization>Red Hat</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <properties>
+ 	<version.org.apache.felix>1.9.0</version.org.apache.felix>
+	<version.org.apache.maven.plugins>2.4.3</version.org.apache.maven.plugins>
+  </properties>
+
+  <modules>
+    <module>archetypes</module>
+  </modules>
+
+  <build>
+    <!-- This section defines the default plugin settings inherited by child projects. -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-scr-plugin</artifactId>
+          <version>${version.org.apache.felix}</version>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <!-- Specify the compiler options and settings -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <showDeprecation>false</showDeprecation>
+          <showWarnings>false</showWarnings>
+        </configuration>
+      </plugin>
+      <!-- Produce source jars during the 'verify' phase -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar</goal>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>**/*TestCase.java</include>
+            <include>**/*Test.java</include>
+          </includes>
+          <systemProperties>
+            <property>
+              <name>java.io.tmpdir</name>
+              <value>${basedir}/target</value>
+            </property>
+          </systemProperties>
+          <argLine>-Xmx256M -XX:MaxPermSize=512m</argLine>
+        </configuration>
+      </plugin>
+      <!-- Build a test-jar for each project, so that src/test/* resources and classes can be used in other projects. 
+        Also customize how the jar files are assembled. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>test-jar</id>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <manifestEntries>
+              <Implementation-URL>${project.url}</Implementation-URL>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-scr-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-scr-scrdescriptor</id>
+            <goals>
+              <goal>scr</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-victims-rule</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule implementation="com.redhat.victims.VictimsRule">
+                  <metadata>warning</metadata>
+                  <fingerprint>fatal</fingerprint>
+                  <updates>${victims.updates}</updates>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencyManagement>
+    <dependencies>
+
+
+    </dependencies>
+  </dependencyManagement>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>${version.org.apache.maven.plugins}</version>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <repositories>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/groups/developer/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>jboss-fuse-repository</id>
+      <name>JBoss Fuse Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/repositories/fs-releases</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/groups/developer/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>daily</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <distributionManagement>
+    <repository>
+      <id>jboss-releases-repository</id>
+      <name>JBoss Releases Repository</name>
+      <url>${jboss.releases.repo.url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>jboss-snapshots-repository</id>
+      <name>JBoss Snapshots Repository</name>
+      <url>${jboss.snapshots.repo.url}</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+</project>
+
