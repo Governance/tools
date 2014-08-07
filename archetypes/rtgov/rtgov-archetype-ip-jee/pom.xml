@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.overlord.tools</groupId>
+    <artifactId>rtgov-archetypes</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>rtgov-archetype-ip-jee</artifactId>
+  <name>Overlord Tools: Archetypes: RTGov: IP JEE Archetype</name>
+  <description>IP(Information Processor) JEE RTGov Archetype</description>
+  <packaging>maven-archetype</packaging>
+  <dependencies>
+   
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>  
+   <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+        <version>2.2</version>
+      </extension>
+    </extensions>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-archetype-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+
+    <plugins>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <!-- Disable 'require plugin versions' due to using snapshot -->
+          <execution>
+            <id>enforce-plugin-versions</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+     
+    </plugins>
+  </build>
+</project>

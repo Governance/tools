@@ -1,0 +1,33 @@
+<archetype xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype/1.0.0 http://maven.apache.org/xsd/archetype-1.0.0.xsd">
+  <id>rtgov-acs-osgi</id>
+  <requiredProperties>
+    <requiredProperty key="groupId"/>
+    <requiredProperty key="artifactId"/>
+  </requiredProperties>
+<resources>
+  	<resource encoding="UTF-8" filtered="true">src/main/resources</resource>
+  </resources>
+  <fileSets>
+    <fileSet encoding="UTF-8" filtered="true">
+	  <directory>src/main/resources</directory>
+	  <includes>
+	    <include>**/*</include>
+	  </includes>
+    </fileSet>  
+    <fileSet encoding="UTF-8">
+	  <directory>src/main/webapp</directory>
+	  <includes>
+	    <include>**/*</include>
+	  </includes>
+    </fileSet>
+      <fileSet encoding="UTF-8">
+	  <directory></directory>
+	  <includes>
+	    <include>Readme.txt</include>
+	  </includes>
+    </fileSet>  
+  </fileSets>
+ 
+
+</archetype>

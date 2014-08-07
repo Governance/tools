@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>${groupId}</groupId>
+	<artifactId>${artifactId}</artifactId>
+	<packaging>bundle</packaging>
+	<version>${version}</version>
+
+	<properties>
+		<version.org.overlord.rtgov>2.0.0-SNAPSHOT</version.org.overlord.rtgov>
+		<version.org.overlord.sramp>0.5.0-SNAPSHOT</version.org.overlord.sramp>	
+	</properties>
+	
+	<!--To deploy in the s-ramp repository uncomment the distribution section-->
+	<!--distributionManagement>
+		<repository>
+			<id>local-sramp-repo</id>
+			<name>S-RAMP 
+		Releases Repository</name>
+			<url>sramp://localhost:8080/s-ramp-server/?artifactGrouping=Project-${project.groupId}.${project.version}</url>
+		</repository>
+		<snapshotRepository>
+			<id>local-sramp-repo-snapshots</id>
+			<name>S-RAMP 
+		Snapshots Repository</name>
+			<url>sramp://localhost:8080/s-ramp-server/?artifactGrouping=Project-${project.groupId}.${project.version}</url>
+		</snapshotRepository>
+	</distributionManagement-->
+		
+	<dependencies>
+		<dependency>
+			<groupId>org.overlord.rtgov.active-queries</groupId>
+			<artifactId>active-collection</artifactId>
+			<scope>provided</scope>
+			<version>${version.org.overlord.rtgov}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.overlord.rtgov.activity-management</groupId>
+			<artifactId>activity</artifactId>
+			<scope>test</scope>
+			<version>${version.org.overlord.rtgov}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.overlord.rtgov.active-queries</groupId>
+			<artifactId>acs-loader-osgi</artifactId>
+			<version>${version.org.overlord.rtgov}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.overlord.rtgov.active-queries</groupId>
+			<artifactId>acs-epn</artifactId>
+			<scope>provided</scope>
+			<version>${version.org.overlord.rtgov}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.overlord.rtgov.activity-analysis</groupId>
+			<artifactId>analytics</artifactId>
+			<scope>provided</scope>
+			<version>${version.org.overlord.rtgov}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.overlord.rtgov.active-queries</groupId>
+			<artifactId>active-collection-infinispan</artifactId>
+			<scope>test</scope>
+			<version>${version.org.overlord.rtgov}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.overlord.rtgov.event-processor-network</groupId>
+			<artifactId>epn-core</artifactId>
+			<scope>test</scope>
+			<version>${version.org.overlord.rtgov}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!--To deploy in the s-ramp repository uncomment the extensions	section -->
+		<!-- extensions>
+			<extension>
+				<groupId>org.overlord.sramp</groupId>
+				<artifactId>s-ramp-wagon</artifactId>
+				<version>${version.org.overlord.sramp}</version>
+			</extension>
+		</extensions> -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>	
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+ 				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Bundle-Activator>org.overlord.rtgov.acs.loader.osgi.ACSActivator</Bundle-Activator>
+						<Import-Package>
+							!javax.inject.*,!javax.enterprise.*,!javax.persistence.*,
+							org.overlord.rtgov.active.collection.epn,org.overlord.rtgov.active.collection.jmx,
+							org.overlord.rtgov.active.collection.infinispan,
+							org.overlord.rtgov.analytics.service,org.overlord.rtgov.analytics.util,
+							org.overlord.rtgov.analytics.situation,
+							org.overlord.rtgov.activity.model,*
+						</Import-Package>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+			</plugin>			
+		</plugins>
+	</build>
+</project>
